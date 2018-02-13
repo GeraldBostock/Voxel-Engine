@@ -17,23 +17,28 @@ void MainGame::run()
 	m_display.createDisplay();
 
 	StaticShader shader("Shaders/vertexShader.vert", "Shaders/fragmentShader.frag");
+	StaticShader waterShader("Shaders/water.vert", "Shaders/water.frag");
 	Camera camera;
 	bool keysHeld[323] = { false };
 
-	//unsigned char heightMap[] = { 1, 2, 0, 3 };
 	glm::mat4 projMatrix = Maths::CreateProjectionMatrix(WINDOW_WIDTH, WINDOW_HEIGHT, 70, 0.1f, 1000.0f);
 	shader.start();
 	shader.loadProjectionMatrix(projMatrix);
 	shader.stop();
 
-	GLuint vaoID;
-	glGenVertexArrays(1, &vaoID);
+	waterShader.start();
+	waterShader.loadProjectionMatrix(projMatrix);
+	waterShader.stop();
 
 	Terrain terrain;
 	unsigned char* heightMap = terrain.GenerateTerrain();
 
-	Mesh mesh(vaoID);
-	mesh.generateMesh(heightMap);
+	Chunk chunk(heightMap);
+
+	/*Mesh mesh;
+	mesh.generateMesh(heightMap);*/
+	//GLuint texture = mesh.loadTexture();
+	GLuint texture = m_atlas.loadTexture("res/mcAtlas.png");
 
 	Timer timer;
 	timer.start();
@@ -41,6 +46,9 @@ void MainGame::run()
 	fpsInit();
 	while (m_running)
 	{
+		float time = m_stepTimer.getTicks() / 1000.f;
+		m_stepTimer.start();
+
 		SDL_Event e;
 		while (SDL_PollEvent(&e))
 		{
@@ -62,22 +70,38 @@ void MainGame::run()
 			camera.updateCamera(e);
 		}
 
-		camera.move(keysHeld);
+		camera.move(keysHeld, time);
 
 		shader.start();
 		shader.loadViewMatrix(camera);
 
 		m_renderer.prepare();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture);
 
-		m_renderer.renderMesh(&mesh);
+
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		m_renderer.renderMesh(chunk.getTerrainMesh());
 
 		shader.stop();
+
+		waterShader.start();
+		waterShader.loadViewMatrix(camera);
+		
+		glDisable(GL_CULL_FACE);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		m_renderer.renderMesh(chunk.getWaterMesh());
+		waterShader.stop();
+		glDisable(GL_BLEND);
+
 
 		m_display.updateDisplay();
 		fpsThink();
 		if (timer.getTicks() > FPS_INTERVAL * 1000)
 		{
-			printf("%f\n", m_framespersecond);
+			printf("FPS: %f\n", m_framespersecond);
 			timer.start();
 		}
 	}

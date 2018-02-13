@@ -11,34 +11,34 @@ Camera::~Camera()
 {
 }
 
-void Camera::move(bool* keys)
+void Camera::move(bool* keys, float time)
 {
 	float mouseSensitivity = 0.07f;
-	float movementSpeed = 0.08f;
+	float movementSpeed = 35.f;
 
 	if (keys[SDLK_w])
 	{
-		m_position.z -= (movementSpeed * (float)cos(m_yaw * M_PI / 180));
-		m_position.x += (movementSpeed * (float)sin(m_yaw * M_PI / 180));
+		m_position.z -= (movementSpeed * (float)cos(m_yaw * M_PI / 180)) * (float)cos(-m_pitch * M_PI / 180) * time;
+		m_position.x += (movementSpeed * (float)sin(m_yaw * M_PI / 180)) * (float)cos(-m_pitch * M_PI / 180) * time;
 		//For flight mode
-		m_position.y += (movementSpeed * (float)sin(-m_pitch * M_PI / 180));
+		m_position.y += (movementSpeed * (float)sin(-m_pitch * M_PI / 180)) * time;
 	}
 	if (keys[SDLK_s])
 	{
-		m_position.z += (movementSpeed * (float)cos(m_yaw * M_PI / 180));
-		m_position.x -= (movementSpeed * (float)sin(m_yaw * M_PI / 180));
+		m_position.z += (movementSpeed * (float)cos(m_yaw * M_PI / 180)) * (float)cos(-m_pitch * M_PI / 180) * time;
+		m_position.x -= (movementSpeed * (float)sin(m_yaw * M_PI / 180)) * (float)cos(-m_pitch * M_PI / 180) * time;
 		//For flight mode
-		m_position.y -= (movementSpeed * (float)sin(-m_pitch * M_PI / 180));
+		m_position.y -= (movementSpeed * (float)sin(-m_pitch * M_PI / 180)) * time;
 	}
 	if (keys[SDLK_a])
 	{
-		m_position.z += (movementSpeed * (float)cos((m_yaw + 90) * M_PI / 180));
-		m_position.x -= (movementSpeed * (float)sin((m_yaw + 90) * M_PI / 180));
+		m_position.z += (movementSpeed * (float)cos((m_yaw + 90) * M_PI / 180)) * time;
+		m_position.x -= (movementSpeed * (float)sin((m_yaw + 90) * M_PI / 180)) * time;
 	}
 	if (keys[SDLK_d])
 	{
-		m_position.z -= (movementSpeed * (float)cos((m_yaw + 90) * M_PI / 180));
-		m_position.x += (movementSpeed * (float)sin((m_yaw + 90) * M_PI / 180));
+		m_position.z -= (movementSpeed * (float)cos((m_yaw + 90) * M_PI / 180)) * time;
+		m_position.x += (movementSpeed * (float)sin((m_yaw + 90) * M_PI / 180)) * time;
 	}
 }
 
@@ -48,19 +48,19 @@ void Camera::updateCamera(SDL_Event e)
 	{
 		if (e.motion.yrel < 0 && m_pitch >= -90)
 		{
-			m_pitch -= 0.2f;
+			m_pitch -= 0.4f;
 		}
 		if (e.motion.yrel > 0 && m_pitch <= 90)
 		{
-			m_pitch += 0.2f;
+			m_pitch += 0.4f;
 		}
 		if (e.motion.xrel < 0)
 		{
-			m_yaw -= 0.2f;
+			m_yaw -= 0.4f;
 		}
 		if (e.motion.xrel > 0)
 		{
-			m_yaw += 0.2f;
+			m_yaw += 0.4f;
 		}
 	}
 }

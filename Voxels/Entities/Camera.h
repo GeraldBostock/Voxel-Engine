@@ -1,6 +1,7 @@
 #pragma once
 #include <glm.hpp>
 #include <SDL.h>
+#include <stdio.h>
 
 class Camera
 {
@@ -14,7 +15,7 @@ public:
 	float getRoll();
 
 	void updateCamera(SDL_Event e);
-	void move(bool* keys);
+	void move(bool* keys, float time);
 
 private:
 	glm::vec3 m_position = glm::vec3(0.0f);

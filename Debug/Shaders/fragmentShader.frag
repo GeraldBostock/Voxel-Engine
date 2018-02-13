@@ -3,8 +3,11 @@
 in vec3 surfaceNormal;
 in vec3 vectorTowardsLight;
 in vec4 color;
+in vec2 texCoords;
 
 out vec4 out_color;
+
+uniform sampler2D textureSampler;
 
 const vec3 light_color = normalize(vec3(1.0, 1.0, 1.0));
 
@@ -19,5 +22,5 @@ void main()
 	
 	vec3 diffuse = brightness * light_color;
 
-	out_color = vec4(diffuse, 1.0) * color;
+	out_color = vec4(diffuse, 1.0) * texture2D(textureSampler, texCoords) * color;
 }

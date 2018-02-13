@@ -1,3 +1,4 @@
-﻿  Terrain.cpp
+﻿  Chunk.cpp
+c:\users\doga\documents\visual studio 2017\projects\voxels\voxels\cube.h(36): warning C4091: 'static ': ignored on left of 'cubeFaces' when no variable is declared
   Voxels.vcxproj -> C:\Users\doga\documents\visual studio 2017\Projects\Voxels\Debug\Voxels.exe
   Voxels.vcxproj -> C:\Users\doga\documents\visual studio 2017\Projects\Voxels\Debug\Voxels.pdb (Partial PDB)

@@ -2,6 +2,7 @@
 #include <glew.h>
 
 #include "Mesh.h"
+#include "Chunk.h"
 
 class Renderer
 {

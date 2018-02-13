@@ -23,7 +23,7 @@ unsigned char* Terrain::GenerateTerrain()
 	{
 		for (int j = 0; j < 256; j++)
 		{
-			heightMap[i * surface->w + j] = pixels[3 * (i * surface->w + j)] / 25;
+			heightMap[i * surface->w + j] = pixels[3 * (i * surface->w + j)];
 			/*for (int k = 0; k < pixels[3 * (i * surface->w + j) / 25]; k++)
 				heightMap[i * surface->w + j] = pixels[3 * (i * surface->w + j)];*/
 		}
