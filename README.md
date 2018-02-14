@@ -4,11 +4,13 @@
 
 **Implemented**
 - Camera movement
-- Semi-optimized rendering
+- Optimized rendering
+- Chunk rendering
+- Block types
 
 **TODO**
-- Refine rendering
-- Block types
+- ~~Refine rendering~~
+- ~~Block types~~
 - Terrain generation
 - Raycasting
 
